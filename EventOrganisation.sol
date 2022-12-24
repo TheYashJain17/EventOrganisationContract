@@ -60,6 +60,27 @@ function registerEvent(string memory _name , uint _date , string memory _place ,
 
 }
 
+function buyTickets(uint _eventId , uint _quantity) payable external{
+
+    require(msg.sender != owner,"Owner Cannot Buy His/Her Own Tickets");
+
+    Event memory _event = Events[_eventId];
+
+    require(_event.date > block.timestamp , "Event Has Already Over");
+
+    require(_event.remainingTickets > _quantity , "Sorry Tickets Are Not Avaiable");
+
+    require(msg.value == _event.price * _quantity , "Price Should Be Equal To The Amount Of The Tickets");
+
+    _event.remainingTickets -= _quantity;
+
+    ticketBal[msg.sender][_eventId] += _quantity;
+
+
+
+
+}
+
 
 
 
