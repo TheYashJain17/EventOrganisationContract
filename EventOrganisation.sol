@@ -36,7 +36,7 @@ function allEventsInfo() view external returns(Event[] memory){
 
 function registerEvent(string memory _name , uint _date , string memory _place , uint _price , uint _totalTickets , uint _remainingTickets) external{
 
-    require(msg.sender == owner,"Only Owner Can Register An Event");
+    require(msg.sender == owner,"Only Owner Can Register/Create An Event");
 
     require(_date > block.timestamp,"You Can Organize Events For Future Date Only");
 
@@ -77,6 +77,21 @@ function buyTickets(uint _eventId , uint _quantity) payable external{
     ticketBal[msg.sender][_eventId] += _quantity;
 
 
+}
+
+function transferTickets(uint _eventId , uint _quantity , address _to) external {
+
+    require(msg.sender != owner , "Owner Cannot Transfer Tickets As He/She Doesn't Have Any Tickets");
+
+    require(ticketBal[msg.sender][_eventId] > _quantity , "You Dont Have Enough Tickets To Transfer");
+
+    Event memory _event = Events[_eventId];
+
+    require(_event.date > block.timestamp , "Event Has Already Occured");
+
+    ticketBal[msg.sender][_eventId] -= _quantity;
+
+    ticketBal[_to][_eventId] += _quantity;
 
 
 }
