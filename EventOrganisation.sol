@@ -97,7 +97,28 @@ function transferTickets(uint _eventId , uint _quantity , address _to) external 
 }
 
 
+function viewBalance() view external returns(uint){
+
+    return address(this).balance;
+
+}
+
+function withDrawBalance() payable external{
+
+    require(msg.sender == owner,"Only Owner Can Call This Function");
+
+    uint amount = address(this).balance;
+
+    owner.transfer(amount);
+
+
+}
+
 
 
 
 }
+
+
+
+  
