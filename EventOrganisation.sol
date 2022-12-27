@@ -28,15 +28,18 @@ constructor(){
     owner = msg.sender;
 }
 
+modifier onlyOwner(){
+    require(msg.sender == owner,"Only Owner Can Access This Function");
+    _;
+}
+
 function allEventsInfo() view external returns(Event[] memory){
  
     return allEvents;
 
 }
 
-function registerEvent(string memory _name , uint _date , string memory _place , uint _price , uint _totalTickets , uint _remainingTickets) external{
-
-    require(msg.sender == owner,"Only Owner Can Register/Create An Event");
+function registerEvent(string memory _name , uint _date , string memory _place , uint _price , uint _totalTickets , uint _remainingTickets) external onlyOwner{
 
     require(_date > block.timestamp,"You Can Organize Events For Future Date Only");
 
@@ -97,13 +100,13 @@ function transferTickets(uint _eventId , uint _quantity , address _to) external 
 }
 
 
-function viewBalance() view external returns(uint){
+function viewBalance() view external onlyOwner returns(uint){
 
     return address(this).balance;
 
 }
 
-function withDrawBalance() payable external{
+function withDrawBalance() payable external onlyOwner{
 
     require(msg.sender == owner,"Only Owner Can Call This Function");
 
@@ -114,10 +117,17 @@ function withDrawBalance() payable external{
 
 }
 
+function getTicketBal(uint _eventId) view  external returns(uint) {
 
+    return ticketBal[msg.sender][_eventId];
 
 
 }
+
+
+}
+
+
 
 
 
