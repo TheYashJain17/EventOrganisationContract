@@ -21,11 +21,11 @@ Event[] allEvents;
 mapping(uint => Event) public Events;
 mapping(address => mapping(uint => uint)) ticketBal;
 
-address owner;
+address payable owner;
 uint eventId;
 
 constructor(){
-    owner = msg.sender;
+    owner = payable(msg.sender);
 }
 
 modifier onlyOwner(){
@@ -126,9 +126,3 @@ function getTicketBal(uint _eventId) view  external returns(uint) {
 
 
 }
-
-
-
-
-
-  
